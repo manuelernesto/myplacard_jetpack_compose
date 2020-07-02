@@ -9,6 +9,7 @@ import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
 import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
+import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.layout.*
 import androidx.ui.material.Button
 import androidx.ui.material.Scaffold
@@ -24,14 +25,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeTheme {
-                Top()
+                App()
             }
         }
     }
 }
 
 @Composable
-fun App(team: Team) {
+fun Home(team: Team) {
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -41,18 +42,20 @@ fun App(team: Team) {
         ) {
 
             TeamItem(
+                placardTitle = "Home Team",
                 team = team.homeTeam,
                 score = team.homeScore,
                 img = team.homeLogo,
-                onUpdate = { newScore ->
+                onBtnClick = { newScore ->
                     team.homeScore = newScore
                 })
 
             TeamItem(
+                placardTitle = "Guest Team",
                 team = team.guestTeam,
                 score = team.guestScore,
                 img = team.guestLogo,
-                onUpdate = { newScore ->
+                onBtnClick = { newScore ->
                     team.guestScore = newScore
                 })
         }
@@ -61,6 +64,7 @@ fun App(team: Team) {
                 team.homeScore = 0
                 team.guestScore = 0
             },
+            shape = CircleShape,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
@@ -74,16 +78,17 @@ fun App(team: Team) {
 }
 
 @Composable
-fun Top() {
+fun App() {
     Scaffold(
         topAppBar = {
             TopAppBar(
-                title = {Text(text = "My Placard ")}
+                title = { Text(text = "My Placard ") }
             )
         },
         bodyContent = {
-            App(team = Team(
-                    "Chigado",
+            Home(
+                team = Team(
+                    "Chicago",
                     0,
                     R.drawable.chicago,
                     "Lakers",
@@ -97,18 +102,19 @@ fun Top() {
 
 @Composable
 fun TeamItem(
+    placardTitle: String,
     team: String,
     score: Int,
     img: Int,
-    onUpdate: (Int) -> Unit
+    onBtnClick: (Int) -> Unit
 ) {
-
     val imgResource = imageResource(img)
-    Column(modifier = Modifier.padding(8.dp),
+    Column(
+        modifier = Modifier.padding(16.dp),
         horizontalGravity = Alignment.CenterHorizontally
     )
     {
-        Text(text = "Home Team", fontSize = 20.sp)
+        Text(text = placardTitle, fontSize = 20.sp)
         Spacer(Modifier.preferredHeight(16.dp))
         Image(imgResource, modifier = Modifier.preferredHeight(100.dp).preferredWidth(100.dp))
         Spacer(Modifier.preferredHeight(16.dp))
@@ -116,20 +122,35 @@ fun TeamItem(
         Spacer(Modifier.preferredHeight(16.dp))
         Text(text = "$score", fontSize = 60.sp)
         Spacer(Modifier.preferredHeight(16.dp))
-        Button(onClick = { onUpdate(score + 3) }) { Text("+ 3 points", fontSize = 18.sp) }
+        Button(onClick = { onBtnClick(score + 3) }, shape = CircleShape) {
+            Text(
+                "+ 3 points",
+                fontSize = 18.sp
+            )
+        }
         Spacer(Modifier.preferredHeight(16.dp))
-        Button(onClick = { onUpdate(score + 2) }) { Text("+ 2 points", fontSize = 18.sp) }
+        Button(onClick = { onBtnClick(score + 2) }, shape = CircleShape) {
+            Text(
+                "+ 2 points",
+                fontSize = 18.sp
+            )
+        }
         Spacer(Modifier.preferredHeight(16.dp))
-        Button(onClick = { onUpdate(score + 1) }) { Text("Free Throw", fontSize = 18.sp) }
-        Spacer(Modifier.preferredHeight(16.dp))
+        Button(
+            onClick = { onBtnClick(score + 1) },
+            shape = CircleShape
+        ) { Text("Free Throw", fontSize = 18.sp) }
+
+
     }
 }
+
 
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     ComposeTheme(darkTheme = false) {
-        Top()
+        App()
     }
 }
