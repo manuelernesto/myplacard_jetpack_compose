@@ -1,0 +1,2 @@
+rootProject.name = "My Placard - Jetpack Compose"
+include ':app'
