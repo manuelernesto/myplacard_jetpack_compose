@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    compileSdkVersion "android-R"
+    compileSdkVersion 'android-R'
 
     defaultConfig {
         applicationId "io.github.manuelernesto.myplacard_jetpackcompose"

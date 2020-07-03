@@ -3,6 +3,8 @@ package io.github.manuelernesto.myplacard_jetpackcompose
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
+import androidx.compose.getValue
+import androidx.compose.setValue
 import androidx.compose.state
 import androidx.ui.core.Alignment
 import androidx.ui.core.Modifier
@@ -20,6 +22,7 @@ import androidx.ui.unit.dp
 import androidx.ui.unit.sp
 import io.github.manuelernesto.myplacard_jetpackcompose.ui.ComposeTheme
 
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,11 +35,32 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun Home(team: Team) {
+fun App() {
+    Scaffold(
+        topAppBar = {
+            TopAppBar(title = { Text(text = "My Placard ") })
+        },
+        bodyContent = { Home() }
+    )
+}
+
+@Composable
+fun Home() {
+
+    var team by state {
+        Team(
+            "CHICAGO",
+            0,
+            R.drawable.chicago,
+            "LAKERS",
+            0,
+            R.drawable.lakers
+        )
+    }
+
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
-        val counterState = state { 0 }
         Row(
             modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.TopCenter)
         ) {
@@ -47,7 +71,7 @@ fun Home(team: Team) {
                 score = team.homeScore,
                 img = team.homeLogo,
                 onBtnClick = { newScore ->
-                    team.homeScore = newScore
+                    team = team.copy(homeScore = newScore)
                 })
 
             TeamItem(
@@ -56,13 +80,13 @@ fun Home(team: Team) {
                 score = team.guestScore,
                 img = team.guestLogo,
                 onBtnClick = { newScore ->
-                    team.guestScore = newScore
+                    team = team.copy(guestScore = newScore)
                 })
         }
         Button(
             onClick = {
-                team.homeScore = 0
-                team.guestScore = 0
+                team = team.copy(homeScore = 0)
+                team = team.copy(guestScore = 0)
             },
             shape = CircleShape,
             modifier = Modifier.fillMaxWidth()
@@ -75,29 +99,6 @@ fun Home(team: Team) {
         }
     }
 
-}
-
-@Composable
-fun App() {
-    Scaffold(
-        topAppBar = {
-            TopAppBar(
-                title = { Text(text = "My Placard ") }
-            )
-        },
-        bodyContent = {
-            Home(
-                team = Team(
-                    "Chicago",
-                    0,
-                    R.drawable.chicago,
-                    "Lakers",
-                    0,
-                    R.drawable.lakers
-                )
-            )
-        }
-    )
 }
 
 @Composable
@@ -141,16 +142,14 @@ fun TeamItem(
             shape = CircleShape
         ) { Text("Free Throw", fontSize = 18.sp) }
 
-
     }
 }
-
 
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    ComposeTheme(darkTheme = false) {
+    ComposeTheme {
         App()
     }
 }
