@@ -14,6 +14,7 @@ import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.CircleShape
 import androidx.ui.layout.*
 import androidx.ui.material.Button
+import androidx.ui.material.Divider
 import androidx.ui.material.Scaffold
 import androidx.ui.material.TopAppBar
 import androidx.ui.res.imageResource
@@ -57,12 +58,8 @@ fun Home() {
             R.drawable.lakers
         )
     }
-
-    Column(
-        modifier = Modifier.padding(16.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.TopCenter)
+    Column(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.TopCenter)
         ) {
 
             TeamItem(
@@ -91,8 +88,7 @@ fun Home() {
             shape = CircleShape,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                "Clean",
+            Text("Clean",
                 fontSize = 18.sp,
                 modifier = Modifier.wrapContentWidth(Alignment.CenterHorizontally)
             )
